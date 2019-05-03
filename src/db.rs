@@ -736,8 +736,14 @@ impl DB {
         let cf_map = Arc::new(RwLock::new(BTreeMap::new()));
 
         if cfs.is_empty() {
-            unsafe {
-                db = ffi_try!(ffi::rocksdb_open(opts.inner, cpath.as_ptr() as *const _,));
+            if !opts.read_only {
+                unsafe {
+                    db = ffi_try!(ffi::rocksdb_open(opts.inner, cpath.as_ptr() as *const _,));
+                }
+            } else {
+                unsafe {
+                    db = ffi_try!(ffi::rocksdb_open_for_read_only(opts.inner, cpath.as_ptr() as *const _, 0,));
+                }
             }
         } else {
             let mut cfs_v = cfs;

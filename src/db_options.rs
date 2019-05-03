@@ -1212,6 +1212,10 @@ impl Options {
             ffi::rocksdb_options_set_allow_mmap_reads(self.inner, is_enabled as c_uchar);
         }
     }
+
+    pub fn set_read_only(&mut self, read_only: bool) {
+        self.read_only = read_only;
+    }
 }
 
 impl Default for Options {
@@ -1221,7 +1225,7 @@ impl Default for Options {
             if opts.is_null() {
                 panic!("Could not create RocksDB options");
             }
-            Options { inner: opts }
+            Options { inner: opts, read_only: false }
         }
     }
 }

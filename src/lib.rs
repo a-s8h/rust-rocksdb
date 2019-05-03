@@ -226,6 +226,7 @@ pub struct PlainTableFactoryOptions {
 /// ```
 pub struct Options {
     inner: *mut ffi::rocksdb_options_t,
+    read_only: bool
 }
 
 /// Optionally wait for the memtable flush to be performed.
